@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartInvers CRM · Capilea · INVERS · V2 Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #060608;
+    --dark:    #0d0d10;
+    --card:    #13131a;
+    --card2:   #16161f;
+    --border:  #1e1e2a;
+    --border2: #2a2a38;
+    --white:   #ffffff;
+    --gray:    #6b6b80;
+    --light:   #b0b0c8;
+    --green:   #06b6d4;
+    --purple:  #0891b2;
+    --blue:    #3b82f6;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--black); color: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+  .label { font-size: 10px; letter-spacing: 3px; color: var(--gray); text-transform: uppercase; font-weight: 600; }
+
+  /* ─── SCROLL PROGRESS ─── */
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, #0891b2, #0e7490, #06b6d4); width: 0%; z-index: 999; pointer-events: none; }
+
+  /* ─── NEOMORPHISM ─── */
+  .neo-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--card);
+    box-shadow: 6px 6px 14px rgba(0,0,0,0.7), -3px -3px 8px rgba(255,255,255,0.03), inset 0 0 0 1px rgba(255,255,255,0.04);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .neo-icon svg { color: var(--light); }
+  .neo-check {
+    width: 20px; height: 20px; border-radius: 8px;
+    background: var(--card);
+    box-shadow: 3px 3px 7px rgba(0,0,0,0.7), -1px -1px 4px rgba(255,255,255,0.04), inset 0 0 0 1px rgba(8,145,178,0.15);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+  }
+  .neo-check svg { color: #22d3ee; }
+
+  /* ─── HEADER ─── */
+  .header { position: sticky; top: 0; z-index: 100; background: rgba(6,6,8,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .header-inner { display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo span { color: var(--gray); font-weight: 400; }
+  .header-badge { display: flex; align-items: center; gap: 8px; background: rgba(6,182,212,0.08); border: 1px solid rgba(8,145,178,0.22); border-radius: 100px; padding: 6px 14px; font-size: 11px; color: var(--green); font-weight: 600; }
+  .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  /* ─── HERO ─── */
+  .hero { padding: 120px 0 100px; text-align: center; position: relative; overflow: hidden; min-height: 90vh; display: flex; align-items: center; }
+  .hero-inner { width: 100%; position: relative; z-index: 1; }
+
+  .hero-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; height: 700px;
+    background: radial-gradient(ellipse at center, rgba(8,145,178,0.13) 0%, rgba(59,130,246,0.05) 40%, transparent 70%);
+    pointer-events: none; will-change: transform; transform: translateZ(0);
+  }
+  .hero-glow-2 {
+    position: absolute; bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(ellipse, rgba(6,182,212,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border2); border-radius: 100px; padding: 7px 18px; font-size: 11px; color: var(--light); font-weight: 500; margin-bottom: 40px; }
+  .hero-eyebrow strong { color: var(--white); }
+
+  .hero h1 {
+    font-size: clamp(40px, 5.2vw, 70px);
+    font-weight: 900; line-height: 1.05; letter-spacing: -3px;
+    margin-bottom: 28px; max-width: 900px;
+    margin-left: auto; margin-right: auto;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #bae6fd 0%, #38bdf8 22%, #7dd3fc 50%, #38bdf8 78%, #67e8f9 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(34,211,238,0.65)) drop-shadow(0 0 48px rgba(14,165,233,0.35));
+  }
+
+  /* Char/word split — clip reveal technique (GSAP.com pattern) */
+  .word-clip, .char-clip { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .word-inner, .char-inner { display: inline-block; }
+
+  /* Skya custom badge (not in icon CDNs) */
+  .tool-skya-badge {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: #0891b2;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 900; color: white; flex-shrink: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-sub { font-size: 19px; color: var(--light); line-height: 1.7; max-width: 560px; margin: 0 auto 56px; font-weight: 400; }
+
+  /* Stats strip inside hero */
+  .hero-stats { display: flex; justify-content: center; gap: 0; margin-top: 8px; }
+  .hstat { padding: 0 40px; border-right: 1px solid var(--border); text-align: center; }
+  .hstat:last-child { border-right: none; }
+  .hstat-n { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; }
+  .hstat-l { font-size: 11px; color: var(--gray); margin-top: 4px; }
+
+  /* ─── TOOLS STRIP ─── */
+  .tools-strip { padding: 44px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .tools-inner { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .tools-eyebrow { font-size: 10px; letter-spacing: 2.5px; color: var(--gray); text-transform: uppercase; font-weight: 600; flex-shrink: 0; white-space: nowrap; }
+  .tools-logos { display: flex; align-items: center; gap: 22px; flex-wrap: nowrap; }
+  .tool-item {
+    display: flex; align-items: center; gap: 9px;
+    opacity: 0.38; transition: opacity 0.25s;
+    cursor: default;
+  }
+  .tool-item:hover { opacity: 0.75; }
+  .tool-item svg { flex-shrink: 0; }
+  .tool-item-name { font-size: 13px; font-weight: 700; color: var(--light); letter-spacing: -0.2px; white-space: nowrap; }
+  .tool-logo-svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+  /* ─── SECTION SHARED ─── */
+  .section { padding: 100px 0; }
+  .section-dark { background: var(--dark); }
+
+  .sh { margin-bottom: 64px; }
+  .sh .label { margin-bottom: 14px; }
+  .sh h2 {
+    font-size: clamp(36px, 4.5vw, 52px);
+    font-weight: 900; letter-spacing: -2px; line-height: 1.05;
+  }
+  .sh p { font-size: 17px; color: var(--light); line-height: 1.75; max-width: 540px; margin-top: 16px; }
+
+  /* ─── PROBLEM ─── */
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 48px; }
+  .problem-item {
+    padding: 32px 36px;
+    background: rgba(12, 12, 18, 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    box-shadow:
+      0 16px 48px rgba(0,0,0,0.5),
+      0 1px 0 rgba(255,255,255,0.07) inset;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .problem-item:hover {
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 20px 56px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.1) inset;
+  }
+  .problem-item-q { font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.4; margin-bottom: 10px; letter-spacing: -0.3px; }
+  .problem-item-q::before { content: '"'; }
+  .problem-item-q::after { content: '"'; }
+  .problem-item-a { font-size: 13px; color: var(--gray); line-height: 1.65; }
+
+  .problem-closer {
+    margin-top: 10px;
+    background: rgba(8,145,178,0.12);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(8,145,178,0.2);
+    border-radius: 16px; padding: 28px 36px;
+    font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: -0.4px; line-height: 1.4;
+    grid-column: 1 / -1;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 1px 0 rgba(8,145,178,0.15) inset;
+  }
+  .problem-closer em { font-style: normal; color: #22d3ee; }
+
+  /* ─── AGITATE ─── */
+  .agitate-block {
+    background: rgba(12, 12, 20, 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(8,145,178,0.18);
+    border-radius: 24px; padding: 56px 56px 48px; position: relative; overflow: hidden;
+    box-shadow:
+      0 32px 80px rgba(0,0,0,0.55),
+      0 1px 0 rgba(8,145,178,0.2) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset;
+  }
+  .agitate-block::before { content: ''; position: absolute; top: -80px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(8,145,178,0.1) 0%, transparent 70%); pointer-events: none; }
+  .agitate-block h2 { font-size: clamp(30px, 3.5vw, 44px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.15; margin-bottom: 18px; max-width: 100%; }
+  .agitate-block h2 em { font-style: normal; color: #22d3ee; }
+  .agitate-block p { font-size: 16px; color: var(--light); line-height: 1.75; max-width: 600px; }
+  .agitate-sedes { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .sede-tag { display: flex; align-items: center; gap: 6px; background: rgba(6,182,212,0.08); border: 1px solid rgba(8,145,178,0.20); border-radius: 100px; padding: 6px 14px; font-size: 12px; color: var(--green); font-weight: 500; }
+  .sede-tag-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; }
+  .sede-pipeline { background: rgba(8,145,178,0.08); border-color: rgba(8,145,178,0.2); color: #22d3ee; }
+  .sede-pipeline .sede-tag-dot { background: #22d3ee; }
+  .sede-pending { background: rgba(107,107,128,0.08); border-color: rgba(107,107,128,0.2); color: var(--gray); }
+  .sede-pending .sede-tag-dot { background: var(--gray); }
+
+  /* ─── FEATURE ROWS (alternating) ─── */
+  .feature-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    padding: 80px 0; border-bottom: 1px solid var(--border);
+  }
+  .feature-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .feature-row.reverse .feature-visual { order: -1; }
+
+  .feature-copy { }
+  .feature-num-label { font-size: 10px; letter-spacing: 3px; color: var(--purple); font-weight: 700; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .feature-num-label::before { content: ''; width: 24px; height: 1px; background: var(--purple); }
+
+  .feature-copy h3 {
+    font-size: clamp(28px, 3vw, 38px);
+    font-weight: 900; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 18px;
+  }
+  .feature-copy h3 em { font-style: normal; color: #22d3ee; }
+  .feature-copy p { font-size: 15px; color: var(--light); line-height: 1.8; margin-bottom: 28px; }
+
+  .feature-quote-block {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid rgba(8,145,178,0.5);
+    padding: 16px 20px; border-radius: 0 12px 12px 0; margin-bottom: 28px;
+    font-size: 14px; color: var(--light); line-height: 1.65; font-style: italic;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.05) inset;
+  }
+
+  .feature-result-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(6,182,212,0.07); border: 1px solid rgba(8,145,178,0.20);
+    border-radius: 100px; padding: 8px 16px;
+    font-size: 12px; color: var(--green); font-weight: 600;
+  }
+  .feature-result-pill svg { color: var(--green); flex-shrink: 0; }
+
+  /* Screenshot container */
+  .feature-visual {
+    position: relative;
+  }
+  .screenshot-wrap {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(12,12,18,0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.7),
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 0 0 1px rgba(255,255,255,0.03);
+    position: relative;
+  }
+  .screenshot-wrap img {
+    width: 100%; display: block;
+    filter: brightness(1);
+    transition: filter 0.4s;
+  }
+  .screenshot-wrap:hover img { filter: brightness(1.05) saturate(1.05); }
+  .screenshot-glow {
+    position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+    width: 80%; height: 100px;
+    background: radial-gradient(ellipse, rgba(8,145,178,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .screenshot-badge {
+    position: absolute; top: 16px; left: 16px; z-index: 2;
+    background: rgba(6,6,8,0.85); backdrop-filter: blur(12px);
+    border: 1px solid var(--border2); border-radius: 100px;
+    padding: 5px 12px; font-size: 10px; color: var(--light); font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* ─── CAMILA SECTION ─── */
+  .camila-section { padding: 100px 0; background: var(--dark); }
+  .camila-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+
+  .camila-copy .feature-copy h3 { font-size: clamp(28px, 3vw, 42px); }
+  .camila-copy .feature-copy p { font-size: 16px; }
+
+  /* Chat window — glass dark */
+  .chat-window {
+    background: rgba(10, 10, 16, 0.78);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; overflow: hidden;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.65),
+      0 1px 0 rgba(255,255,255,0.09) inset,
+      0 -1px 0 rgba(0,0,0,0.4) inset;
+  }
+  .chat-topbar {
+    background: rgba(255,255,255,0.03); padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-avatar-sm {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #0891b2, #3b82f6);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .chat-avatar-sm svg { color: #fff; }
+  .chat-name { font-size: 13px; font-weight: 700; }
+  .chat-status { font-size: 10px; color: var(--green); margin-top: 1px; }
+  .chat-dot-online { width: 8px; height: 8px; background: var(--green); border-radius: 50%; margin-left: auto; animation: pulse-dot 2s infinite; }
+
+  .chat-body { padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; min-height: 380px; }
+
+  .cmsg { display: flex; flex-direction: column; }
+  .cmsg-in { align-items: flex-start; }
+  .cmsg-out { align-items: flex-end; }
+  .cbubble {
+    padding: 11px 15px; font-size: 13px; line-height: 1.55; max-width: 78%; text-align: left; border-radius: 4px 16px 16px 16px;
+  }
+  .cmsg-in .cbubble { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.07); color: var(--light); }
+  .cmsg-out .cbubble { background: rgba(8,145,178,0.10); border: 1px solid rgba(8,145,178,0.22); color: var(--white); border-radius: 16px 4px 16px 16px; }
+  .ctime { font-size: 10px; color: var(--gray); margin-top: 4px; padding: 0 4px; }
+
+  .ctyping-wrap { display: flex; align-items: flex-start; }
+  .ctyping {
+    padding: 11px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 4px 16px 16px 16px; display: flex; gap: 5px; align-items: center;
+  }
+  .cdot { width: 5px; height: 5px; background: var(--gray); border-radius: 50%; }
+
+  /* ─── SKYA DIFFERENTIATOR ─── */
+  .skya-section { padding: 100px 0; }
+  .skya-block {
+    background: rgba(10, 10, 18, 0.75);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(8,145,178,0.18);
+    border-radius: 24px; padding: 56px;
+    display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center;
+    position: relative; overflow: hidden;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.6),
+      0 1px 0 rgba(8,145,178,0.2) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset;
+  }
+  .skya-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(8,145,178,0.7), rgba(59,130,246,0.7), transparent); }
+  .skya-block h3 { font-size: clamp(26px, 3vw, 36px); font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; line-height: 1.15; }
+  .skya-block h3 em { font-style: normal; color: #22d3ee; }
+  .skya-block p { font-size: 15px; color: var(--light); line-height: 1.8; max-width: 560px; }
+  .skya-block strong { color: var(--white); }
+  .skya-badge {
+    background: rgba(8,145,178,0.1); border: 1px solid rgba(8,145,178,0.25); border-radius: 16px; padding: 24px 32px;
+    text-align: center; flex-shrink: 0; min-width: 160px;
+  }
+  .skya-badge-num { font-size: 40px; font-weight: 900; letter-spacing: -2px; color: #22d3ee; line-height: 1; }
+  .skya-badge-label { font-size: 11px; color: var(--gray); margin-top: 6px; line-height: 1.4; }
+
+  /* ─── PRICING ─── */
+  .pricing-section { padding: 100px 0; background: var(--dark); }
+  .pricing-inner {
+    background: rgba(10, 10, 16, 0.78);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 56px;
+    display: grid; grid-template-columns: 1fr 1px 1fr; gap: 56px; align-items: start;
+    position: relative; overflow: hidden;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.6),
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 -1px 0 rgba(0,0,0,0.35) inset;
+  }
+  .pricing-inner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(8,145,178,0.6), rgba(59,130,246,0.4), transparent); }
+  .pricing-divider { background: var(--border); align-self: stretch; }
+  .price-eyebrow { font-size: 11px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
+  .price-big { font-size: 72px; font-weight: 900; letter-spacing: -4px; line-height: 1; }
+  .price-big sub { font-size: 22px; color: var(--gray); font-weight: 400; letter-spacing: 0; vertical-align: baseline; }
+  .price-note { font-size: 13px; color: var(--gray); margin-top: 20px; line-height: 1.8; }
+  .pi-label { font-size: 10px; letter-spacing: 3px; color: var(--gray); text-transform: uppercase; font-weight: 600; margin-bottom: 24px; }
+  .pi-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .pi-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--light); line-height: 1.5; }
+
+  /* ─── CTA ─── */
+  .cta-section { padding: 100px 0 120px; }
+
+  .cta-bg-wrap {
+    border-radius: 28px; overflow: hidden; position: relative;
+    box-shadow: 0 48px 120px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.08) inset;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Imagen de fondo INVERS */
+  .cta-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    object-position: center top; filter: brightness(0.45) saturate(0.8);
+    pointer-events: none; user-select: none;
+  }
+
+  /* Overlay glass sobre la imagen */
+  .cta-inner {
+    background: rgba(6, 10, 14, 0.62);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 80px; text-align: center; position: relative; z-index: 1;
+  }
+
+  /* Gradiente de entrada desde abajo para que el texto quede legible */
+  .cta-inner::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(to top,  rgba(6,6,8,0.85) 0%, transparent 45%),
+      linear-gradient(to bottom, rgba(6,6,8,0.5) 0%, transparent 30%);
+  }
+  .cta-inner::after { display: none; }
+
+  /* Tagline THINK IN REVERSE watermark */
+  .cta-tagline-watermark {
+    position: absolute; bottom: 28px; right: 36px; z-index: 2;
+    font-size: 9px; letter-spacing: 4px; color: rgba(255,255,255,0.18);
+    text-transform: uppercase; font-weight: 700; pointer-events: none;
+  }
+  .cta-inner h2 {
+    font-size: clamp(38px, 5vw, 60px); font-weight: 900; letter-spacing: -2.5px; line-height: 1.05; margin-bottom: 20px; position: relative; z-index: 1;
+  }
+  .cta-inner h2 em { font-style: normal; background: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cta-inner p { font-size: 17px; color: var(--light); line-height: 1.7; max-width: 500px; margin: 0 auto 40px; position: relative; z-index: 1; }
+
+  .cta-steps { display: flex; justify-content: center; gap: 12px; margin-bottom: 48px; position: relative; z-index: 1; flex-wrap: wrap; }
+  .cta-step {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px 24px; text-align: left; min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.07) inset;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .cta-step:hover {
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.1) inset;
+  }
+  .cta-step-num { font-size: 10px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .cta-step-text { font-size: 14px; font-weight: 700; color: var(--white); line-height: 1.4; }
+  .cta-step-sub { font-size: 12px; color: var(--gray); margin-top: 4px; line-height: 1.5; }
+
+  .cta-contact {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 18px;
+    padding: 20px 28px; position: relative; z-index: 1;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.08) inset;
+  }
+  .cta-contact-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #0891b2, #3b82f6);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .cta-contact-avatar svg { color: #fff; }
+  .cta-contact-info { text-align: left; }
+  .cta-contact-name { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+  .cta-contact-role { font-size: 11px; color: var(--gray); }
+  .cta-contact-email { font-size: 12px; color: var(--purple); margin-top: 2px; font-weight: 500; }
+  .cta-contact-wa {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; color: #25D366; margin-top: 4px; font-weight: 600;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .cta-contact-wa:hover { opacity: 0.8; }
+
+  /* ─── CTA BUTTON ─── */
+  .cta-btn-wrap { position: relative; z-index: 1; margin-bottom: 40px; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
+    color: #fff; text-decoration: none; font-size: 16px; font-weight: 800;
+    letter-spacing: -0.2px; padding: 18px 40px; border-radius: 100px;
+    box-shadow: 0 0 0 1px rgba(34,197,94,0.3), 0 8px 32px rgba(34,197,94,0.45), 0 2px 8px rgba(0,0,0,0.4);
+    transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .cta-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 0 1px rgba(34,197,94,0.5), 0 16px 48px rgba(34,197,94,0.55), 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .cta-btn:active { transform: translateY(0) scale(0.98); }
+  .cta-btn-icon { flex-shrink: 0; }
+  .cta-btn-sub { font-size: 11px; font-weight: 500; opacity: 0.75; margin-top: 12px; color: var(--light); }
+
+  /* ─── EVIDENCE GRID ─── */
+  .evidence-section { padding: 80px 0; background: var(--dark); }
+  .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 48px; }
+  .evidence-card {
+    padding: 28px 28px;
+    background: rgba(12,12,18,0.72);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .evidence-card::before { content: ''; position: absolute; top: 0; left: 0; width: 48px; height: 2px; background: var(--purple); }
+  .evidence-card:hover { border-color: rgba(255,255,255,0.12); }
+  .evidence-card-sede { font-size: 10px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+  .evidence-card-text { font-size: 14px; color: var(--white); font-weight: 700; line-height: 1.5; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .evidence-card-meta { font-size: 13px; color: var(--gray); line-height: 1.65; }
+  .evidence-card-highlight { border-color: rgba(8,145,178,0.28) !important; background: rgba(8,145,178,0.06) !important; }
+  .evidence-card-highlight::before { width: 100%; }
+  @media (max-width: 880px) { .evidence-grid { grid-template-columns: 1fr; } }
+
+  /* ─── FOOTER ─── */
+  .footer-bar { border-top: 1px solid var(--border); padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-size: 11px; color: #444; }
+  .footer-right { font-size: 11px; color: #444; letter-spacing: 1px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 880px) {
+    .container { padding: 0 24px; }
+    .hero h1 { letter-spacing: -2.5px; }
+    .hero-stats { flex-wrap: wrap; gap: 24px; }
+    .hstat { border-right: none; padding: 0 20px; }
+    .feature-row, .camila-inner, .skya-block, .pricing-inner { grid-template-columns: 1fr; }
+    .feature-row.reverse .feature-visual { order: 0; }
+    .pricing-divider { display: none; }
+    .skya-block { gap: 32px; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .cta-inner { padding: 48px 28px; }
+    .sh h2 { letter-spacing: -1.5px; }
+    .agitate-block { padding: 36px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">INVERS <span>/ SmartInvers CRM</span></div>
+      <div class="header-badge"><span class="live-dot"></span>13 sedes activas · 4 países</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero-section">
+  <div class="hero-glow" id="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-eyebrow" id="hero-eyebrow">Para franquiciados de la red &nbsp;·&nbsp; <strong>Capilea 2026</strong></div>
+      <h1 id="hero-headline">El paciente que no vino <em>vale más de lo que crees.</em></h1>
+      <p class="hero-sub" id="hero-sub">
+        No es un CRM. Es la primera vez que tu sede tiene memoria — de cada prospecto que llegó, de cada turno que no se confirmó, de cada presupuesto que nunca tuvo seguimiento. 13 sedes de tu red ya operan así. La tuya todavía puede.
+      </p>
+      <div class="hero-stats" id="hero-stats">
+        <div class="hstat">
+          <div class="hstat-n" id="hs-sedes">13</div>
+          <div class="hstat-l">sedes activas</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-n" id="hs-paises">4</div>
+          <div class="hstat-l">países en la red</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-n">+1 año</div>
+          <div class="hstat-l">en producción</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS STRIP -->
+<div class="tools-strip" id="tools-strip">
+  <div class="container">
+    <div class="tools-inner">
+      <div class="tools-eyebrow">Stack tecnológico</div>
+      <div class="tools-logos" id="tools-logos">
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span class="tool-item-name">WhatsApp API</span>
+        </div>
+
+        <div class="tool-item">
+          <img src="assets/logo-meta.png" alt="Meta" style="height:22px;width:auto;flex-shrink:0;object-fit:contain;">
+          <span class="tool-item-name">Meta</span>
+        </div>
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="5"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="tool-item-name">Instagram</span>
+        </div>
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.79 1.54V6.78a4.85 4.85 0 01-1.02-.09z"/>
+          </svg>
+          <span class="tool-item-name">TikTok</span>
+        </div>
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="2" width="9" height="9" rx="1.5"/>
+            <rect x="13" y="2" width="9" height="9" rx="1.5"/>
+            <rect x="2" y="13" width="9" height="9" rx="1.5"/>
+            <rect x="13" y="13" width="9" height="9" rx="1.5"/>
+          </svg>
+          <span class="tool-item-name">Microsoft 365</span>
+        </div>
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+          </svg>
+          <span class="tool-item-name">AWS</span>
+        </div>
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24">
+            <circle cx="4" cy="12" r="3" fill="currentColor"/>
+            <circle cx="20" cy="5" r="3" fill="currentColor"/>
+            <circle cx="20" cy="19" r="3" fill="currentColor"/>
+            <line x1="7" y1="12" x2="17" y2="6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="7" y1="12" x2="17" y2="17.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="tool-item-name">N8N</span>
+        </div>
+
+        <div class="tool-item">
+          <svg class="tool-logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="2" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+            <line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="tool-item-name">Claude AI</span>
+        </div>
+
+        <div class="tool-item">
+          <img src="assets/logo-skya-nb.png" alt="SkyIA" style="height:26px;width:auto;flex-shrink:0;object-fit:contain;">
+          <span class="tool-item-name">SkyIA</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section class="section section-dark" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-120px;right:-100px;width:480px;height:480px;background:radial-gradient(circle,rgba(8,145,178,0.09) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-80px;left:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(59,130,246,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="sh" id="sh-problem">
+      <div class="label">El problema real</div>
+      <h2>Lo que se pierde cuando<br>la sede no tiene memoria</h2>
+      <p>No es falta de pacientes. Es lo que pasa cuando la operación depende de que alguien se acuerde.</p>
+    </div>
+    <div class="problem-grid" id="problem-grid">
+      <div class="problem-item">
+        <div class="problem-item-q">El turno de mañana que nadie confirmó</div>
+        <div class="problem-item-a">La recepcionista lo llama si se acuerda. Si está con otro paciente, no. La silla queda vacía. El sistema no se acuerda porque no hay sistema.</div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-item-q">El presupuesto que se fue sin seguimiento</div>
+        <div class="problem-item-a">A los 3 días de la valorativa, nadie lo llamó. A los 7 días ya eligió otra clínica. No es falta de ganas — es falta de protocolo automático.</div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-item-q">No sé qué está haciendo la recepcionista</div>
+        <div class="problem-item-a">No hay forma de saber cuántos prospectos atendió, cuántos quedaron sin respuesta, ni cuánto tardó en cada uno. El negocio no puede operar sin esos datos.</div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-item-q">El prospecto que escribe a las 11 de la noche</div>
+        <div class="problem-item-a">Nadie lo ve hasta las 10 de la mañana del día siguiente. Para ese momento ya consultó en otra sede o lo dejó para después. El primer respondedor gana — siempre.</div>
+      </div>
+      <div class="problem-closer">
+        Eso no es falta de equipo. Es lo que pasa cuando la operación depende de la memoria de las personas. Cuando alguien no está, la información se va con ella. Eso tiene nombre: <em>falta de sistema comercial</em>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGITATE -->
+<section class="section">
+  <div class="container">
+    <div class="agitate-block" id="agitate-block">
+      <h2>Las sedes que llevan más de un año<br><em>ya no operan así.</em></h2>
+      <p>En cada catchup mensual aparece el mismo patrón: las sedes que adoptaron el sistema más temprano son las que hoy tienen claridad sobre qué pasa, cuándo pasa y por qué. La diferencia no es el equipo. Es que tienen un sistema que recuerda por ellos. No es una herramienta externa — es lo que usa tu misma red.</p>
+      <div class="agitate-sedes" id="agitate-sedes">
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Nordelta</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Pilar</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Martínez</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Ramos Mejía</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Parque Leloir</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> La Plata</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Lomas</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Belgrano</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Microcentro</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Caballito</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Lima</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Asunción</div>
+        <div class="sede-tag"><span class="sede-tag-dot"></span> Quito</div>
+<div class="sede-tag sede-pending"><span class="sede-tag-dot"></span> Tu sede · pendiente</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES — 3 alternating rows with screenshots -->
+<section class="section section-dark" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;top:10%;right:-120px;width:500px;height:500px;background:radial-gradient(circle,rgba(8,145,178,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20%;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,0.06) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="sh" id="sh-features">
+      <div class="label">El sistema comercial</div>
+      <h2>Lo que SmartInvers<br>hace por tu sede</h2>
+      <p>No es un CRM genérico. Es un sistema construido sobre cómo funciona Capilea — integrado con Skya, probado en más de un año de operación real en la red.</p>
+    </div>
+
+    <!-- Feature 1: Pipeline -->
+    <div class="feature-row" id="fr1">
+      <div class="feature-copy">
+        <div class="feature-num-label">01 · Embudo de pacientes</div>
+        <h3>Cada prospecto tiene<br>su etapa. <em>En tiempo real.</em></h3>
+        <div class="feature-quote-block">
+          "Ahora sé cuántos prospectos tengo, cuántos están en valorativa, cuántos compraron — y cuántos se perdieron en el camino. Eso antes no existía."
+        </div>
+        <p>Implementamos etiquetas que distinguen entre Cliente y Lead. Pipelines específicos por tipo de tratamiento — incluyendo cirugías de alto ticket con sus propias etapas de cierre. Desde que alguien escribe por primera vez hasta que cierra su tratamiento, el sistema registra cada movimiento. Sin Excel. Sin memoria de equipo.</p>
+        <div class="feature-result-pill">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Visibilidad total del negocio. Cada etapa. Sin excepciones.
+        </div>
+      </div>
+      <div class="feature-visual">
+        <div class="screenshot-wrap">
+          <span class="screenshot-badge">Panel de ventas</span>
+          <img src="assets/mockup-dashboard.png" loading="lazy" decoding="async" alt="Dashboard SmartInvers CRM" style="background:#0a0f14;">
+          <div class="screenshot-glow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Calendarios -->
+    <div class="feature-row reverse" id="fr2">
+      <div class="feature-copy">
+        <div class="feature-num-label">02 · Recordatorios y confirmaciones</div>
+        <h3>La agenda que<br><em>nunca queda vacía.</em></h3>
+        <div class="feature-quote-block">
+          "Los pacientes sí responden las secuencias. Ya sé quién viene mañana antes de llegar a la sede — y el que no confirmó también aparece marcado."
+        </div>
+        <p>Cada turno agendado activa automáticamente el protocolo de confirmación por WhatsApp. Si el paciente no confirma, la sede lo sabe con tiempo para reubicar el turno. Si no viene, el sistema lo recupera al día siguiente — sin que nadie tenga que perseguirlo. Las sedes que llevan más tiempo reportan mejora directa en ausentismo.</p>
+        <div class="feature-result-pill">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Menos ausentes. Más sillas ocupadas. Confirmado en la red.
+        </div>
+      </div>
+      <div class="feature-visual">
+        <div class="screenshot-wrap">
+          <span class="screenshot-badge">Calendario automático</span>
+          <img src="assets/mockup-calendario.png" loading="lazy" decoding="async" alt="Calendario SmartInvers CRM" style="background:#0a0f14;">
+          <div class="screenshot-glow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Dashboard -->
+    <div class="feature-row" id="fr3">
+      <div class="feature-copy">
+        <div class="feature-num-label">03 · Reportes de eficiencia operativa</div>
+        <h3>Lo que hace tu equipo.<br><em>Con números reales.</em></h3>
+        <div class="feature-quote-block">
+          "Desde el inicio pedí el dashboard por recepcionista. Necesitaba saber quién estaba convirtiendo y quién no. Hoy lo tengo."
+        </div>
+        <p>El dashboard de eficiencia muestra cuántos prospectos atendió cada miembro del equipo, cuántos avanzaron al siguiente paso y cuántos se cayeron. No para controlar — para entrenar. Para saber dónde poner el foco y qué protocolo necesita refuerzo. Disponible desde el celular en iOS y Android.</p>
+        <div class="feature-result-pill">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Métricas por persona, no solo por sede
+        </div>
+      </div>
+      <div class="feature-visual">
+        <div class="screenshot-wrap">
+          <span class="screenshot-badge">SmartInvers App</span>
+          <img src="assets/mockup-app.png" loading="lazy" decoding="async" alt="SmartInvers App" style="background:#0a0f14;">
+          <div class="screenshot-glow"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CAMILA SECTION -->
+<section class="camila-section" id="camila-section">
+  <div class="container">
+    <div class="camila-inner">
+
+      <!-- Chat window -->
+      <div class="chat-window" id="chat-window">
+        <div class="chat-topbar">
+          <div class="chat-avatar-sm">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="chat-name">Camila · Capilea</div>
+            <div class="chat-status">activa ahora</div>
+          </div>
+          <div class="chat-dot-online"></div>
+        </div>
+        <div class="chat-body" id="chat-body">
+
+          <div class="cmsg cmsg-in" id="cm1">
+            <div class="cbubble">Hola, quería consultar sobre el microinjerto capilar</div>
+            <div class="ctime">11:52 PM</div>
+          </div>
+
+          <div class="ctyping-wrap" id="ct1">
+            <div class="ctyping">
+              <div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+            </div>
+          </div>
+
+          <div class="cmsg cmsg-out" id="cm2">
+            <div class="cbubble">¡Hola! Soy Camila, asistente de Capilea. El microinjerto capilar es nuestro tratamiento estrella — resultados naturales y permanentes con anestesia local. ¿Me puedes dejar tu nombre para coordinar tu cita valorativa gratuita?</div>
+            <div class="ctime">11:52 PM · Camila IA</div>
+          </div>
+
+          <div class="cmsg cmsg-in" id="cm3">
+            <div class="cbubble">Soy Diego, ¿tienen turno esta semana?</div>
+            <div class="ctime">11:53 PM</div>
+          </div>
+
+          <div class="ctyping-wrap" id="ct2">
+            <div class="ctyping">
+              <div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+            </div>
+          </div>
+
+          <div class="cmsg cmsg-out" id="cm4">
+            <div class="cbubble">¡Hola Diego! Esta semana tenemos disponibilidad el jueves a las 10hs y las 15hs, y el viernes de 9 a 14hs. ¿Cuál te queda mejor para la cita valorativa?</div>
+            <div class="ctime">11:53 PM · Camila IA</div>
+          </div>
+
+          <div class="cmsg cmsg-in" id="cm5">
+            <div class="cbubble">El jueves a las 10 perfecto</div>
+            <div class="ctime">11:54 PM</div>
+          </div>
+
+          <div class="ctyping-wrap" id="ct3">
+            <div class="ctyping">
+              <div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+            </div>
+          </div>
+
+          <div class="cmsg cmsg-out" id="cm6">
+            <div class="cbubble">¡Perfecto Diego! Tu cita valorativa queda confirmada para el jueves a las 10hs. Te voy a enviar la dirección y todos los detalles ahora. ¡Te esperamos!</div>
+            <div class="ctime">11:54 PM · Camila IA</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Copy -->
+      <div class="camila-copy">
+        <div class="feature-copy">
+          <div class="feature-num-label">04 · Asistente digital</div>
+          <h3>Camila responde<br>cuando tú <em>no estás.</em></h3>
+          <p>A las 11 de la noche, cuando el equipo no está, Camila responde. Califica la consulta, explica el tratamiento, ofrece horarios disponibles y agenda la cita valorativa directamente en Skya. Si la persona ya es paciente de la sede, la trata diferente al prospecto nuevo. El primer respondedor siempre gana — y Camila nunca duerme.</p>
+          <div class="feature-quote-block">
+            "A las 11 de la noche alguien le responde al prospecto que escribe. Y el jueves a las 10 aparece en el calendario — sin que nadie haya hecho nada."
+          </div>
+          <div class="feature-result-pill">
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Consultas de noche agendadas. Sin intervención humana.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCIA REAL EN LA RED -->
+<section class="evidence-section" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(8,145,178,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="sh">
+      <div class="label">Evidencia real</div>
+      <h2>Lo que observamos<br>en los catchups mensuales</h2>
+      <p>No son proyecciones. Son comportamientos observados en sedes de Capilea durante los seguimientos mensuales que hacemos con cada franquiciado.</p>
+    </div>
+    <div class="evidence-grid">
+
+      <div class="evidence-card">
+        <div class="evidence-card-sede">Parque Leloir · mayo 2026</div>
+        <div class="evidence-card-text">Los pacientes sí responden las secuencias automáticas de WhatsApp</div>
+        <div class="evidence-card-meta">Las confirmaciones de turno llegaron antes de que el equipo tuviera que llamar. El ausentismo bajó sin que nadie lo gestionara manualmente.</div>
+      </div>
+
+      <div class="evidence-card">
+        <div class="evidence-card-sede">Belgrano · desde el onboarding</div>
+        <div class="evidence-card-text">Dashboard de eficiencia por recepcionista activo desde el primer mes</div>
+        <div class="evidence-card-meta">La franquiciada lo pidió como condición desde el inicio. Hoy lo usa para saber a quién entrenar y en qué protocolo reforzar.</div>
+      </div>
+
+      <div class="evidence-card">
+        <div class="evidence-card-sede">Ramos Mejía · activo</div>
+        <div class="evidence-card-text">Pipeline de cirugías separado del pipeline de consultas</div>
+        <div class="evidence-card-meta">Los tratamientos de alto ticket tienen su propio flujo y sus propias etapas de cierre. El seguimiento es distinto porque el proceso es distinto.</div>
+      </div>
+
+      <div class="evidence-card">
+        <div class="evidence-card-sede">Toda la red</div>
+        <div class="evidence-card-text">Las sedes distinguen entre "Cliente" y "Lead" con consistencia</div>
+        <div class="evidence-card-meta">Dos categorías distintas, dos protocolos distintos. El sistema trata diferente a quien ya compró que al prospecto nuevo — sin que nadie lo configure cada vez.</div>
+      </div>
+
+      <div class="evidence-card">
+        <div class="evidence-card-sede">Seguimiento mensual · todas las sedes</div>
+        <div class="evidence-card-text">El sistema que más se actualiza es el que tiene acompañamiento constante</div>
+        <div class="evidence-card-meta">Los flujos que mejor funcionan son los que se ajustan mes a mes. No basta con instalar — hay que seguir estando.</div>
+      </div>
+
+      <div class="evidence-card evidence-card-highlight">
+        <div class="evidence-card-sede">Conclusión de catchups · julio 2026</div>
+        <div class="evidence-card-text" style="color:#22d3ee;">Lo que más se agradece no es la tecnología</div>
+        <div class="evidence-card-meta" style="color:var(--light);">Es que alguien sigue estando. El equipo de INVERS no desaparece después del onboarding — acompaña a cada sede mes a mes, ajusta los flujos y mide lo que funciona.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKYA DIFFERENTIATOR -->
+<section class="skya-section" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(8,145,178,0.1) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="skya-block" id="skya-block">
+      <div>
+        <h3>La integración que<br><em>ningún otro tiene.</em></h3>
+        <p>Skya es el software de operación de Capilea. <strong>Ningún otro proveedor tiene integración directa con Skya.</strong> SmartInvers es el único sistema que lee lo que pasa en Skya — turnos confirmados, ausentes, tipos de tratamiento — y actúa en consecuencia automáticamente. Cuando hay un pipeline de cirugías de alto ticket, el sistema sabe que el seguimiento debe ser diferente. Eso no se replica con una herramienta genérica — es la integración que hace que todo lo demás funcione sin que nadie cargue nada a mano.</p>
+      </div>
+      <div class="skya-badge">
+        <div class="skya-badge-num">1</div>
+        <div class="skya-badge-label">único sistema<br>integrado<br>con Skya</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-60px;right:-60px;width:440px;height:440px;background:radial-gradient(circle,rgba(8,145,178,0.09) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-60px;left:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(59,130,246,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="sh" id="sh-pricing">
+      <div class="label">Inversión</div>
+      <h2>Inversión transparente.<br>Sin sorpresas.</h2>
+    </div>
+    <div class="pricing-inner" id="pricing-card">
+      <div style="display:flex;flex-direction:column;gap:32px;">
+        <!-- Setup fee -->
+        <div>
+          <div class="price-eyebrow">Setup · una sola vez</div>
+          <div class="price-big">$1,000 <sub>USD</sub></div>
+          <div class="price-note" style="margin-top:12px;">
+            Configuración completa de la sede.<br>
+            Integración con Skya y WhatsApp API.<br>
+            Onboarding en vivo para tu equipo.
+          </div>
+        </div>
+        <!-- Separador interno -->
+        <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+        <!-- Monthly fee -->
+        <div>
+          <div class="price-eyebrow">Mensualidad · por sede</div>
+          <div class="price-big" style="font-size:54px;letter-spacing:-3px;">$100 <sub>USD/mes</sub></div>
+          <div class="price-note" style="margin-top:12px;">
+            Soporte continuo incluido.<br>
+            Sin costos ocultos.
+          </div>
+        </div>
+      </div>
+      <div class="pricing-divider"></div>
+      <div>
+        <div class="pi-label">Qué incluye</div>
+        <ul class="pi-list" id="pi-list">
+          <li><div class="neo-check"><svg width="10" height="10" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Embudo de pacientes en tiempo real</li>
+          <li><div class="neo-check"><svg width="10" height="10" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Recordatorios y reconfirmaciones automáticas</li>
+          <li><div class="neo-check"><svg width="10" height="10" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Recovery automático de ausentes</li>
+          <li><div class="neo-check"><svg width="10" height="10" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Camila — asistente digital 24/7 en WhatsApp</li>
+          <li><div class="neo-check"><svg width="10" height="10" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Dashboard de citas y métricas por sede</li>
+          <li><div class="neo-check"><svg width="10" height="10" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Integración directa con Skya</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-bg-wrap">
+
+      <!-- Imagen de fondo INVERS "Think in Reverse" -->
+      <img class="cta-bg-img" src="assets/think-in-reverse.png" alt="">
+
+      <div class="cta-inner" id="cta-inner">
+        <h2>La primera vez que<br>tu sede <em>tiene memoria.</em></h2>
+        <p>No es un CRM. Es un sistema comercial construido sobre cómo funciona Capilea. El onboarding toma 30 días — y el acompañamiento no para después.</p>
+        <div class="cta-steps" id="cta-steps">
+          <div class="cta-step">
+            <div class="cta-step-num">01</div>
+            <div class="cta-step-text">Diagnóstico de la sede</div>
+            <div class="cta-step-sub">30 minutos. Sin costo.</div>
+          </div>
+          <div class="cta-step">
+            <div class="cta-step-num">02</div>
+            <div class="cta-step-text">Configuración de la sede</div>
+            <div class="cta-step-sub">Conexión con Skya + WhatsApp API.</div>
+          </div>
+          <div class="cta-step">
+            <div class="cta-step-num">03</div>
+            <div class="cta-step-text">Tu equipo capacitado</div>
+            <div class="cta-step-sub">Onboarding en vivo. Arrancan desde el día 1.</div>
+          </div>
+        </div>
+        <!-- CTA Principal -->
+        <div class="cta-btn-wrap" id="cta-btn-wrap">
+          <a href="https://wa.me/593985581321?text=Hola+Fernando%2C+quiero+conocer+SmartInvers+para+mi+sede+de+Capilea" class="cta-btn" target="_blank" rel="noopener">
+            <span class="cta-btn-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            </span>
+            Solicitar mi diagnóstico
+          </a>
+          <div class="cta-btn-sub">Sin costo · Sin compromiso · Respuesta en 24 h</div>
+        </div>
+
+        <div class="cta-contact" id="cta-contact">
+          <div class="cta-contact-avatar">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="cta-contact-info">
+            <div class="cta-contact-name">Fernando Armijos</div>
+            <div class="cta-contact-role">INVERS AI Technologies</div>
+            <div class="cta-contact-email">fernando.a@inverstudio.com</div>
+            <a href="https://wa.me/593985581321" class="cta-contact-wa" target="_blank" rel="noopener">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+              +593 98 558 1321
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Watermark INVERS -->
+      <div class="cta-tagline-watermark">THINK IN REVERSE</div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-bar">
+      <div class="footer-left">INVERS AI Technologies LLC · 2026 · Confidencial — uso interno red Capilea</div>
+      <div class="footer-right">BRO-INV-CAP-GHL-002</div>
+    </div>
+  </div>
+</footer>
+
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── SCROLL PROGRESS ── */
+const prog = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+}, { passive: true });
+
+/* ── MOUSE PARALLAX — gsap.quickTo() con xPercent/yPercent/rotation (GSAP.com exact pattern) ── */
+const glow = document.getElementById('hero-glow');
+const heroSec = document.getElementById('hero-section');
+const qX   = gsap.quickTo(glow, 'xPercent',  { duration: 1,   ease: 'power3' });
+const qY   = gsap.quickTo(glow, 'yPercent',  { duration: 1,   ease: 'power3' });
+const qRot = gsap.quickTo(glow, 'rotation',  { duration: 1.2, ease: 'power3' });
+heroSec.addEventListener('mousemove', e => {
+  const r  = heroSec.getBoundingClientRect();
+  const nx = gsap.utils.mapRange(0, r.width,  -20, 20, e.clientX - r.left);
+  const ny = gsap.utils.mapRange(0, r.height, -20, 20, e.clientY - r.top);
+  const w  = gsap.utils.clamp(-1, 1, gsap.utils.mapRange(r.width * 0.25, r.width * 0.75, 1, -1, e.clientX - r.left));
+  qX(nx); qY(ny); qRot(ny * w);
+}, { passive: true });
+
+/* ── CHAR SPLIT — manual SplitText equivalente ── */
+function splitChars(el) {
+  const chars = [];
+  const walk = node => {
+    if (node.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      [...node.textContent].forEach(ch => {
+        if (ch.trim() === '') {
+          frag.appendChild(document.createTextNode(ch));
+        } else {
+          const clip  = Object.assign(document.createElement('span'), { className: 'char-clip' });
+          const inner = Object.assign(document.createElement('span'), { className: 'char-inner', textContent: ch });
+          clip.appendChild(inner); frag.appendChild(clip); chars.push(inner);
+        }
+      });
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && node.nodeName === 'EM') {
+      /* <em> como unidad completa — preserva background-clip:text del gradiente neon */
+      const clip  = Object.assign(document.createElement('span'), { className: 'char-clip' });
+      const inner = Object.assign(document.createElement('span'), { className: 'char-inner' });
+      inner.appendChild(node.cloneNode(true));
+      clip.appendChild(inner);
+      node.parentNode.replaceChild(clip, node);
+      chars.push(inner);
+    } else if (node.nodeType === 1 && !/^(BR|SCRIPT|STYLE)$/.test(node.nodeName)) {
+      [...node.childNodes].forEach(walk);
+    }
+  };
+  [...el.childNodes].forEach(walk);
+  return chars;
+}
+/* ── HERO — fade+slide como unidad (preserva word-wrap del h1) ── */
+const heroTl = gsap.timeline();
+heroTl
+  .from('#hero-eyebrow', { opacity: 0, y: 20, duration: 0.55, ease: 'power2.out' })
+  .from('#hero-headline', { opacity: 0, y: 48, duration: 0.85, ease: 'power3.out' }, '-=0.2')
+  .from('#hero-sub', { opacity: 0, y: 40, duration: 0.9, ease: 'power3.out' }, '-=0.55')
+  .from('#hero-stats .hstat', { opacity: 0, y: 30, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.5');
+
+/* Counters */
+heroTl.add(() => {
+  const counter = (id, target, dur) => {
+    const o = { v: 0 }, el = document.getElementById(id);
+    if (el) gsap.to(o, { v: target, duration: dur, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v); } });
+  };
+  counter('hs-sedes', 13, 1.5);
+  counter('hs-paises', 4, 1.0);
+}, '-=0.4');
+
+/* ── TOOLS STRIP — fade + slide up en stagger ── */
+gsap.from('#tools-logos .tool-item', {
+  scrollTrigger: { trigger: '#tools-strip', start: 'top 85%', once: true },
+  opacity: 0, y: 22, duration: 0.5, stagger: 0.09, ease: 'power2.out'
+});
+
+/* ── SECTION HEADERS — char reveal con rotationX (GSAP.com wordOne/wordTwo pattern) ── */
+['sh-problem', 'sh-features', 'sh-pricing'].forEach(id => {
+  const block = document.getElementById(id);
+  if (!block) return;
+  const label = block.querySelector('.label');
+  const h2    = block.querySelector('h2');
+  const p     = block.querySelector('p');
+  const chars = h2 ? splitChars(h2) : [];
+  gsap.set(chars, { transformOrigin: '50% 100%' });
+
+  const tl = gsap.timeline({ scrollTrigger: { trigger: block, start: 'top 80%', once: true } });
+  if (label) tl.from(label, { opacity: 0, x: -30, duration: 0.5, ease: 'power2.out' });
+  if (chars.length) tl.from(chars, {
+    yPercent: 120, rotationX: -90, opacity: 0,
+    duration: 0.7, stagger: 0.018, ease: 'back.out(1.4)'
+  }, label ? '-=0.1' : 0);
+  if (p) tl.from(p, { opacity: 0, y: 24, duration: 0.65, ease: 'power2.out' }, '-=0.3');
+});
+
+/* ── PROBLEM GRID ── */
+gsap.from('#problem-grid .problem-item', {
+  scrollTrigger: { trigger: '#problem-grid', start: 'top 78%', once: true },
+  opacity: 0, y: 50, duration: 0.65, stagger: 0.12, ease: 'power3.out'
+});
+gsap.from('.problem-closer', {
+  scrollTrigger: { trigger: '.problem-closer', start: 'top 85%', once: true },
+  opacity: 0, y: 28, duration: 0.65, ease: 'power2.out', delay: 0.25
+});
+
+/* ── AGITATE ── */
+const agBlock = document.getElementById('agitate-block');
+if (agBlock) {
+  const agH2 = agBlock.querySelector('h2');
+  const agP  = agBlock.querySelector('p');
+  const agTl = gsap.timeline({ scrollTrigger: { trigger: agBlock, start: 'top 78%', once: true } });
+  if (agH2) agTl.from(agH2, { opacity: 0, y: 36, duration: 0.75, ease: 'power3.out' });
+  if (agP)  agTl.from(agP,  { opacity: 0, y: 24, duration: 0.65, ease: 'power2.out' }, '-=0.4');
+}
+
+/* Sede tags — elastic pop (GSAP.com elastic.out pattern) */
+gsap.from('.sede-tag', {
+  scrollTrigger: { trigger: '#agitate-sedes', start: 'top 88%', once: true },
+  opacity: 0, scale: 0, y: 20,
+  duration: 0.55, stagger: 0.045, ease: 'elastic.out(1, 0.75)'
+});
+
+/* ── FEATURE ROWS — slide dramático (120px) con scale ligero ── */
+[['#fr1', 120], ['#fr2', -120], ['#fr3', 120]].forEach(([id, xDir]) => {
+  const row = document.querySelector(id);
+  if (!row) return;
+  const copy   = row.querySelector('.feature-copy');
+  const visual = row.querySelector('.feature-visual');
+  const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 75%', once: true } });
+  tl
+    .from(copy,   { opacity: 0, x: -xDir, duration: 1.1, ease: 'power4.out' })
+    .from(visual, { opacity: 0, x: xDir,  duration: 1.1, ease: 'power4.out', scale: 0.94 }, '<0.12');
+});
+
+/* Screenshot parallax — scrub suave */
+document.querySelectorAll('.screenshot-wrap img').forEach(img => {
+  gsap.to(img, {
+    yPercent: -10, ease: 'none',
+    scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+  });
+});
+
+/* ── CAMILA ── */
+const camiTl = gsap.timeline({ scrollTrigger: { trigger: '#camila-section', start: 'top 75%', once: true } });
+camiTl
+  .from('#chat-window', { opacity: 0, x: -80, scale: 0.95, duration: 1.0, ease: 'power4.out' })
+  .from('.camila-copy .feature-copy > *', { opacity: 0, x: 50, duration: 0.75, stagger: 0.13, ease: 'power3.out' }, '-=0.6');
+
+/* Chat loop */
+function buildChatTl() {
+  const els = ['#cm1','#cm2','#cm3','#cm4','#cm5','#cm6','#ct1','#ct2','#ct3'];
+  gsap.set(els, { opacity: 0, y: 8 });
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
+  tl
+    .to('#cm1',  { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.3)
+    .to('#ct1',  { opacity: 1, y: 0, duration: 0.25 }, 0.9)
+    .to('#ct1 .cdot', { keyframes: { y: [-5, 0] }, duration: 0.35, stagger: 0.1, repeat: 2, ease: 'power2.inOut' }, 1.0)
+    .to('#ct1',  { opacity: 0, duration: 0.2 }, 2.0)
+    .to('#cm2',  { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 2.1)
+    .to('#cm3',  { opacity: 1, y: 0, duration: 0.4,  ease: 'power2.out' }, 3.3)
+    .to('#ct2',  { opacity: 1, y: 0, duration: 0.25 }, 3.9)
+    .to('#ct2 .cdot', { keyframes: { y: [-5, 0] }, duration: 0.35, stagger: 0.1, repeat: 2, ease: 'power2.inOut' }, 4.0)
+    .to('#ct2',  { opacity: 0, duration: 0.2 }, 5.0)
+    .to('#cm4',  { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 5.1)
+    .to('#cm5',  { opacity: 1, y: 0, duration: 0.4,  ease: 'power2.out' }, 6.3)
+    .to('#ct3',  { opacity: 1, y: 0, duration: 0.25 }, 6.9)
+    .to('#ct3 .cdot', { keyframes: { y: [-5, 0] }, duration: 0.35, stagger: 0.1, repeat: 2, ease: 'power2.inOut' }, 7.0)
+    .to('#ct3',  { opacity: 0, duration: 0.2 }, 8.0)
+    .to('#cm6',  { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 8.1)
+    .to(els, { opacity: 0, y: 6, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, 11.5);
+  return tl;
+}
+ScrollTrigger.create({ trigger: '#camila-section', start: 'top 80%', once: true, onEnter: () => buildChatTl() });
+
+/* ── SKYA ── */
+gsap.from('#skya-block', {
+  scrollTrigger: { trigger: '#skya-block', start: 'top 78%', once: true },
+  opacity: 0, y: 60, scale: 0.97, duration: 1.0, ease: 'power4.out'
+});
+
+/* ── PRICING ── */
+gsap.from('#pricing-card', {
+  scrollTrigger: { trigger: '#pricing-card', start: 'top 78%', once: true },
+  opacity: 0, y: 60, scale: 0.97, duration: 1.0, ease: 'power4.out'
+});
+gsap.from('#pi-list li', {
+  scrollTrigger: { trigger: '#pi-list', start: 'top 82%', once: true },
+  opacity: 0, x: 32, duration: 0.5, stagger: 0.1, ease: 'power3.out', delay: 0.35
+});
+
+/* ── CTA — chars reveal en el h2 + elastic en steps (GSAP.com buttonIn pattern) ── */
+const ctaH2 = document.querySelector('#cta-inner h2');
+const ctaChars = ctaH2 ? splitChars(ctaH2) : [];
+gsap.set(ctaChars, { transformOrigin: '50% 100%' });
+
+/* Parallax en imagen de fondo CTA */
+gsap.to('.cta-bg-img', {
+  yPercent: 12, ease: 'none',
+  scrollTrigger: { trigger: '.cta-bg-wrap', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+});
+
+const ctaTl = gsap.timeline({ scrollTrigger: { trigger: '.cta-bg-wrap', start: 'top 80%', once: true } });
+if (ctaChars.length) ctaTl.from(ctaChars, {
+  yPercent: 120, rotationX: -90, opacity: 0,
+  duration: 0.75, stagger: 0.02, ease: 'back.out(1.4)'
+});
+ctaTl
+  .from('#cta-inner p',  { opacity: 0, y: 28, duration: 0.7, ease: 'power2.out' }, '-=0.4')
+  .from('#cta-steps .cta-step', { opacity: 0, y: 40, scale: 0.92, duration: 0.55, stagger: 0.13, ease: 'back.out(1.7)' }, '-=0.3')
+  .from('#cta-btn-wrap', { opacity: 0, y: 32, scale: 0.88, duration: 0.65, ease: 'back.out(2.2)' }, '-=0.15')
+  .from('#cta-contact', { opacity: 0, y: 24, scale: 0.9, duration: 0.55, ease: 'back.out(2)' }, '-=0.3')
+  .from('.cta-tagline-watermark', { opacity: 0, duration: 1.2, ease: 'power1.out' }, '-=0.5');
+</script>
+
+</body>
+</html>
